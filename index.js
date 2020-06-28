@@ -60,20 +60,27 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   // // for a complete Dialogflow fulfillment library Actions on Google client library v2 integration sample
 
   // Run the proper function handler based on the matched Dialogflow intent name
- 	function handleSaveToDB(agent)
+ 		
+  function handleSaveToDB(agent)
   {
-    const email = agent.parameters.email;
-    if (/^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/.test(email)){
-    return admin.database().ref('data').push({
-      first_name: 'Rahul',
-      last_name: 'dsja',
-      text: email
-    });
-    }
-    else{
-      agent.add('Please enter an email address in a valid format');
-    }
+      const name = agent.parameters.any;
+  
+    // return admin.database().ref('data').push({
+     //Name: name
+    //});
   }
+  	function handleEmail(agent)
+  {
+  	let params = agent.getContext("name").parameters;
+    const email = agent.parameters.email;
+    const name = params.any;
+   // agent.add(name);
+     return admin.database().ref('data').push({
+       	Name: name,
+     	Email: email
+    });
+  }
+  
   function handleSaveFromDB(agent){
     return admin.database().ref('data').once('value').then((snapshot) => {
     	const value = snapshot.child('text').val();
@@ -87,7 +94,8 @@ exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, resp
   let intentMap = new Map();
   intentMap.set('Default Welcome Intent', welcome);
   intentMap.set('Default Fallback Intent', fallback);
-  intentMap.set('SaveToDB', handleSaveToDB);
+  intentMap.set('User Provide Name', handleSaveToDB);
+  intentMap.set('User Provide Email', handleEmail);
 
   intentMap.set('ReadFromDB', handleSaveFromDB);
   // intentMap.set('your intent name here', yourFunctionHandler);
