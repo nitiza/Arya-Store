@@ -8,7 +8,8 @@ const {Card, Suggestion} = require('dialogflow-fulfillment');
  
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),
-  databaseURL: 'ws://arya-htkaui.firebaseio.com/'
+  databaseURL: 'ws://arya-subscribe.firebaseio.com/'
+  
 });
 process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
  
